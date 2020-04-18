@@ -2,6 +2,7 @@ pipeline {
   environment {
     registry = "kzinmr/simple-flask-api"
     registryCredential = "dockerhub"
+    dockerImage = docker.build registry + ":$BUILD_NUMBER"
   }
   agent any
   stages {
@@ -22,11 +23,21 @@ pipeline {
     }
 
     stage('Build image') {
-      steps{
+      steps {
         script {
           docker.build registry + ":$BUILD_NUMBER"
         }
       }
     }
+    stage('Deploy Image') {
+      steps {
+        script {
+          docker.withRegistry( '', registryCredential ) {
+            dockerImage.push()
+          }
+        }
+      }
+    }
+
   }
 }
