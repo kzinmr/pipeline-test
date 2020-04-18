@@ -19,8 +19,8 @@ pipeline {
     stage('Docker') {
       steps {
         sh """
-        sudo docker build -t kzinmr/simple-flask-api .
-        sudo docker push kzinmr/simple-flask-api:v1 
+        docker build -t kzinmr/simple-flask-api .
+        docker push kzinmr/simple-flask-api:v1 
         """
       }
     }
