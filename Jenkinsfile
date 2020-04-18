@@ -1,4 +1,8 @@
 pipeline {
+  environment {
+    registry = "kzinmr/simple-flask-api"
+    registryCredential = ‘dockerhub’
+  }
   agent any
   stages {
     stage('build') {
@@ -16,12 +20,12 @@ pipeline {
         sh 'python -m flake8 .'
       }
     }
-    stage('Docker') {
-      steps {
-        sh """
-        docker build -t kzinmr/simple-flask-api:v1 .
-        docker push kzinmr/simple-flask-api:v1 
-        """
+
+    stage('Build image') {
+      steps{
+        script {
+          docker.build registry + ":$BUILD_NUMBER"
+        }
       }
     }
   }
