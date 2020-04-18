@@ -9,16 +9,16 @@ pipeline {
     stage('Test') {
       steps {
         sh '''
-        pip install -r requirements.txt
-        pytest
+        python -m pip install -r requirements.txt
+        python -m pytest
         '''
       }
     }
     stage('Lint') {
       steps {
         sh '''
-        pip install -r requirements.txt
-        black
+        python -m pip install -r requirements.txt
+        python -m black
         '''
       }
     }
