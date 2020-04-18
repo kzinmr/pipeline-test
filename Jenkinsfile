@@ -16,5 +16,13 @@ pipeline {
         sh 'python -m flake8 .'
       }
     }
+    stage('Docker') {
+      steps {
+        sh """
+        sudo docker build -t kzinmr/simple-flask-api .
+        sudo docker push kzinmr/simple-flask-api:v1 
+        """
+      }
+    }
   }
 }
