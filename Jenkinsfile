@@ -6,7 +6,7 @@ pipeline {
   }
   agent any
   stages {
-    stage('build') {
+    stage('Build') {
       steps {
         sh 'python -m pip install -r requirements.txt'
       }
@@ -29,7 +29,7 @@ pipeline {
         }
       }
     }
-    stage('Deploy Image') {
+    stage('Deploy image') {
       steps {
         script {
           docker.withRegistry( '', registryCredential ) {
@@ -38,6 +38,10 @@ pipeline {
         }
       }
     }
-
+    stage('Remove unused docker image') {
+      steps{
+        sh "docker rmi $registry:$BUILD_NUMBER"
+      }
+    }
   }
 }
