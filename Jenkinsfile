@@ -8,14 +8,18 @@ pipeline {
     }
     stage('Test') {
       steps {
-        sh 'pip install -r requirements.txt'
-        sh 'pytest'
+        sh '''
+        pip install -r requirements.txt
+        pytest
+        '''
       }
     }
     stage('Lint') {
       steps {
-        sh 'pip install -r requirements.txt'
-        sh 'black'
+        sh '''
+        pip install -r requirements.txt
+        black
+        '''
       }
     }
   }
