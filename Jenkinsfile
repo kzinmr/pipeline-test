@@ -13,7 +13,7 @@ pipeline {
     }
     stage('Lint') {
       steps {
-        sh 'python -m black .'
+        sh 'python -m flake8 .'
       }
     }
   }
