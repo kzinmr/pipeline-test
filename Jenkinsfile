@@ -1,7 +1,7 @@
 pipeline {
   environment {
     registry = "kzinmr/simple-flask-api"
-    registryCredential = ‘dockerhub’
+    registryCredential = "dockerhub"
   }
   agent any
   stages {
