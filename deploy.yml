@@ -1,0 +1,13 @@
+- hosts: masters
+  gather_facts: False
+
+  vars:
+    image_tag: IMAGE_VERSION_TO_BE_REPLACED
+  tasks:
+    - name: deploy the new version
+      shell: |
+        export BlueVersion=$(kubectl get service app-service -o=jsonpath='{.metadata.labels.version}')
+        kubectl get deployment app-$BlueVersion -o=yaml | sed -e "s/$BlueVersion/{{ image_tag }}/g" | kubectl apply -f -
+        kubectl rollout status deployment/app-{{ image_tag }}
+        kubectl get service app-service -o=yaml | sed -e "s/$BlueVersion/{{ image_tag }}/g" | kubectl apply -f -
+        kubectl delete deployment app-$BlueVersion

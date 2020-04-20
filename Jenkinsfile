@@ -29,7 +29,7 @@ pipeline {
         }
       }
     }
-    stage('Deploy image') {
+    stage('Push image') {
       steps {
         script {
           docker.withRegistry( '', registryCredential ) {
@@ -39,9 +39,17 @@ pipeline {
       }
     }
     stage('Remove unused docker image') {
-      steps{
+      steps {
         sh "docker rmi $registry:v$BUILD_NUMBER"
       }
     }
+
+    stage('Deploy a container based on the image') {
+      steps {
+        sh 'cat deploy.yml | sed -e "s/IMAGE_VERSION_TO_BE_REPLACED/v$BUILD_NUMBER/" > _deploy.yml'
+        ansiblePlaybook credentialsId: 'my_aws_key', inventory: 'hosts', playbook: '_deploy.yml'
+      }
+    }
+
   }
 }

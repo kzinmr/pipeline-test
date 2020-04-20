@@ -51,6 +51,14 @@ sudo apt update
 sudo apt install docker-ce
 ```
 
+### Install Ansible:
+On Ubuntu18.04LTS:
+```
+sudo apt update
+sudo apt install software-properties-common
+sudo apt-add-repository --yes --update ppa:ansible/ansible
+sudo apt install ansible
+```
 
 ### Setup credential information to push docker images to dockerhub
 
