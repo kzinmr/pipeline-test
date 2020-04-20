@@ -10,7 +10,7 @@ LOG.setLevel(logging.INFO)
 
 @app.route("/", methods=["POST", "GET"])
 def health():
-    return jsonify(text="Healthy(v22)")
+    return jsonify(text="Healthy(v27)")
 
 
 if __name__ == "__main__":
