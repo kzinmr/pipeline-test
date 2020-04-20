@@ -3,6 +3,7 @@ pipeline {
     registry = "kzinmr/simple-flask-api"
     registryCredential = "dockerhub"
     dockerImage = ''
+    ansibleCredential = "my_aws_key"
   }
   agent any
   stages {
@@ -47,7 +48,7 @@ pipeline {
     stage('Deploy a container based on the image') {
       steps {
         sh 'cat deploy.yml | sed -e "s/IMAGE_VERSION_TO_BE_REPLACED/v$BUILD_NUMBER/" > _deploy.yml'
-        ansiblePlaybook credentialsId: 'my_aws_key', inventory: 'hosts', playbook: '_deploy.yml'
+        ansiblePlaybook credentialsId: ansibleCredential, disableHostKeyChecking: true, inventory: 'hosts', playbook: '_deploy.yml'
       }
     }
 
