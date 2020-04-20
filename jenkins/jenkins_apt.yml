@@ -1,0 +1,33 @@
+- hosts: masters
+  become: yes
+
+  tasks:
+    - name: Install jenkins
+      block:
+      - name: Update all packages to the latest version
+        apt:
+          upgrade: dist
+      - name: jdk
+        apt:
+          name: default-jdk
+          update_cache: yes
+      - name: jenkins-key
+        shell: |
+          wget -q -O - https://pkg.jenkins.io/debian/jenkins-ci.org.key | apt-key add -
+          sh -c 'echo deb http://pkg.jenkins.io/debian-stable binary/ > /etc/apt/sources.list.d/jenkins.list'
+      - name: jenkins
+        apt:
+          name: jenkins
+          update_cache: yes
+      - name: Add the user 'jenkins' with the group of 'root'
+        user:
+          name: jenkins
+          group: root
+          append: yes
+
+    - name: Show initial password
+      block:
+      - shell: cat /var/lib/jenkins/secrets/initialAdminPassword
+        register: data
+      - debug: msg="{{ data.stdout }}"
+      tags: ['never', 'password']

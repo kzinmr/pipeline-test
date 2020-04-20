@@ -1,0 +1,22 @@
+- hosts: all
+  become: yes
+
+  vars:
+    key_name: my_aws_key
+    key_path: "{{ lookup('env', 'HOME') }}/.ssh/{{ key_name }}.pub"
+
+  tasks:
+
+    - name: create the 'ubuntu' user
+      user: name=ubuntu append=yes state=present createhome=yes shell=/bin/bash
+    - name: allow 'ubuntu' to have passwordless sudo
+      lineinfile:
+        dest: /etc/sudoers
+        line: 'ubuntu ALL=(ALL) NOPASSWD: ALL'
+        validate: 'visudo -cf %s'
+
+    - name: Set authorized key for user ubuntu copying it from current user.
+      authorized_key:
+        user: ubuntu
+        state: present
+        key: "{{ lookup('file', key_path) }}"

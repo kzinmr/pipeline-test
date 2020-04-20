@@ -36,7 +36,9 @@ sudo systemctl status jenkins
 # sudo cat /var/lib/jenkins/secrets/initialAdminPassword
 ```
 
-### Install Blue Ocean and create a new pipeline with git
+### Install Jenkins plungins
+- Blue Ocean
+- Ansible
 
 ### Install Docker:
 
